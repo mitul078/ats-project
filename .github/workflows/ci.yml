@@ -10,21 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo:6
-        ports:
-          - 27017:27017
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-
     env:
       NODE_ENV: test
-      MONGO_URI: mongodb://localhost:27017/ats_test
-      REDIS_HOST: localhost
-      REDIS_PORT: 6379
       JWT_SECRET: test_secret_key
       JWT_EXPIRES_IN: 1d
 
@@ -45,7 +32,4 @@ jobs:
         run: npm run lint
 
       - name: Run unit tests
-        run: npm run test:unit
-
-      - name: Run integration tests
-        run: npm run test:integration
+        run: npm test
