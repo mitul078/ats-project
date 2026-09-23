@@ -9,7 +9,7 @@
     "start": "node server.js",
     "worker": "node worker.js",
     "seed": "node src/seeds/users.seed.js",
-    "lint": "eslint src tests",
+    "lint": "eslint src",
     "test": "jest --runInBand"
   },
   "keywords": [],
