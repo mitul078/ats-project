@@ -6,7 +6,8 @@ import Auth from "../models/auth.model.js"
 
 const users = [
     { email: "recruiter@ats.com", password: "Recruiter@123", role: "recruiter" },
-    { email: "candidate@ats.com", password: "Candidate@123", role: "candidate" },
+    { email: "candidate1@ats.com", password: "Candidate@123", role: "candidate" },
+    { email: "candidate2@ats.com", password: "Candidate@123", role: "candidate" }
 ]
 
 async function seed() {
