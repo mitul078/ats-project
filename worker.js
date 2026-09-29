@@ -9,6 +9,8 @@ import { extractTextFromPdf } from "./src/services/resume.service.js"
 import { extractResumeData, scoreResumeAgainstJob } from "./src/services/ai.service.js"
 import { getCache, setCache } from "./src/services/cache.service.js"
 import { cacheHash } from "./src/utils/hash.js"
+import notifyService from "./src/services/notify.service.js"
+import Auth from "./src/models/auth.model.js"
 
 
 await connectDB()
@@ -56,6 +58,20 @@ const worker = new Worker(
         application.aiSummary = scoreResult.summary
         application.status = "scored"
         await application.save()
+
+        const candidate = await Auth.findById(application.candidateId)
+
+        await notifyService.publishEvent({
+            eventType: "resume.scored",
+            userId: application.candidateId.toString(),
+            email: candidate.email,
+            idempotencyKey: `resume.scored-${application._id}`,
+            data: {
+                candidateName: candidate.email.split("@")[0],
+                jobTitle: jobPosting.title,
+                score: scoreResult.score,
+            }
+        })
 
         return { applicationId, score: scoreResult.score }
     },
